@@ -1,0 +1,12 @@
+management:
+  endpoint:
+    env:
+      show-values: always
+  endpoints:
+    access:
+      default: unrestricted
+
+logging:
+  level:
+    root: info
+    dev.matzat.numberconverter: debug

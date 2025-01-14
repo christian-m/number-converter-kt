@@ -1,0 +1,60 @@
+spring.application.name: Conversion Service
+server:
+  port: 8080
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    access:
+      default: none
+    web:
+      exposure:
+        include: info,health,metrics,prometheus,configprops,env,threaddump,loggers,conditions,mappings
+
+  endpoint:
+    info:
+      access: read_only
+    health:
+      access: read_only
+      show-details: always
+      probes:
+        enabled: true
+        add-additional-paths: true
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+    configprops:
+      access: read_only
+    env:
+      access: read_only
+    threaddump:
+      access: read_only
+    loggers:
+      access: read_only
+    conditions:
+      access: read_only
+    mappings:
+      access: read_only
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  jpa:
+    properties:
+      hibernate.jdbc.time_zone: UTC
+    hibernate.ddl-auto: validate
+    open-in-view: false
+  web:
+    locale: en
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+  api-docs:
+    path: /api-docs
+
+logging:
+  level:
+    root: info

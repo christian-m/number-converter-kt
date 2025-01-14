@@ -1,0 +1,10 @@
+logging:
+  level:
+    root: info
+    dev.matzat.numberconverter: debug
+
+# enable clean migrations so that the Flyway Test Extension can execute a clean migration what will erase all existing
+# DB objects before the migration is executed in front of an integration test
+spring:
+  flyway:
+    clean-disabled: false

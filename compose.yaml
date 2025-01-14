@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./docker/postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/postgresql/db-data:/var/lib/postgresql/data
+
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    ports:
+      - "8085:9090"
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    extra_hosts:
+      # Necessary for working metrics on Linux, see https://github.com/docker/for-linux/issues/264#issuecomment-965465879
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana:10.0.6
+    depends_on:
+      - prometheus
+    command:
+      - sh -c './wait-for http://prometheus:9090 -- echo "Prometheus is up"'
+    env_file:
+      - ./docker/grafana/.env
+    ports:
+      - "8086:3000"
+    volumes:
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./docker/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./docker/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
