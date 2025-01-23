@@ -63,5 +63,5 @@ There is a prepared `compose.yml` to use with Docker locally.
 
 ## Motivation
 
-* Converting a Java application to Kotlin
+* Converting a Java application to Kotlin (see [number-converter](https://github.com/christian-m/number-converter))
 * Getting more practice with Maven again, because I haven't used it for a long time
