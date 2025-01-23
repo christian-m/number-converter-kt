@@ -24,6 +24,56 @@ class BinaryToRomanConverterTest(
     @Autowired
     private val converter: BinaryToRomanConverter,
 ) {
+    @ParameterizedTest
+    @MethodSource("binaryToRomanTestdata")
+    @DisplayName("WHEN a valid binary value is submitted to the converter THEN the appropriate roman number is returned as string")
+    fun testIntToRoman(
+        input: String,
+        expected: String,
+    ) {
+        val result = converter.convert(input)
+        assertThat(result).isEqualTo(expected)
+    }
+
+    @Test
+    @DisplayName("WHEN a binary value out of range is submitted to the converter THEN an IllegalArgumentException is thrown")
+    fun testBinaryToRomanOutOfRange() {
+        val givenInput = "111110100000"
+        assertThat(assertThrows<IllegalArgumentException> { converter.convert(givenInput) }.message).isNotNull().isEqualTo(
+            "Submitted input '$givenInput' is not a valid value or in the supported range",
+        )
+    }
+
+    @Test
+    @DisplayName("WHEN an invalid binary value is submitted to the converter THEN an IllegalArgumentException is thrown")
+    fun testInvalidBinaryToRoman() {
+        val givenInput = "1X0X1X0X"
+        assertThat(assertThrows<IllegalArgumentException> { converter.convert(givenInput) }.message).isNotNull().isEqualTo(
+            "Submitted input '$givenInput' is not a valid value or in the supported range",
+        )
+    }
+
+    @Test
+    @DisplayName("WHEN the conversion method BINARY_TO_ROMAN is submitted THEN true is returned, false otherwise")
+    fun testSupportTheCorrectMethod() {
+        assertThat(converter.supports(ConversionMethod.BINARY_TO_ROMAN)).isTrue()
+        assertThat(converter.supports(ConversionMethod.DECIMAL_TO_ROMAN)).isFalse()
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryToRomanTestdata")
+    @DisplayName("WHEN a valid value is submitted THEN the validation returns true")
+    fun testValidationSuccess(givenInput: String) {
+        assertThat(converter.isValid(givenInput)).isTrue()
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["", "x", "A", "15", "111110100000"])
+    @DisplayName("WHEN an invalid value is submitted THEN the validation returns false")
+    fun testValidationFailure(givenInput: String) {
+        assertThat(converter.isValid(givenInput)).isFalse()
+    }
+
     companion object {
         @JvmStatic
         fun binaryToRomanTestdata() =
@@ -69,55 +119,5 @@ class BinaryToRomanConverterTest(
                 Arguments.of("101110111000", "MMM"),
                 Arguments.of("111110011111", "MMMCMXCIX"),
             )
-    }
-
-    @ParameterizedTest
-    @MethodSource("binaryToRomanTestdata")
-    @DisplayName("WHEN a valid binary value is submitted to the converter THEN the appropriate roman number is returned as string")
-    fun testIntToRoman(
-        input: String,
-        expected: String,
-    ) {
-        val result = converter.convert(input)
-        assertThat(result).isEqualTo(expected)
-    }
-
-    @Test
-    @DisplayName("WHEN a binary value out of range is submitted to the converter THEN an IllegalArgumentException is thrown")
-    fun testBinaryToRomanOutOfRange() {
-        val givenInput = "111110100000"
-        assertThat(assertThrows<IllegalArgumentException> { converter.convert(givenInput) }.message).isNotNull().isEqualTo(
-            "Submitted input '$givenInput' is not a valid binary value or exceeds the limit of the maximum (111110011111)",
-        )
-    }
-
-    @Test
-    @DisplayName("WHEN an invalid binary value is submitted to the converter THEN an IllegalArgumentException is thrown")
-    fun testInvalidBinaryToRoman() {
-        val givenInput = "1X0X1X0X"
-        assertThat(assertThrows<IllegalArgumentException> { converter.convert(givenInput) }.message).isNotNull().isEqualTo(
-            "Submitted input '$givenInput' is not a valid binary value or exceeds the limit of the maximum (111110011111)",
-        )
-    }
-
-    @Test
-    @DisplayName("WHEN the conversion method BINARY_TO_ROMAN is submitted THEN true is returned, false otherwise")
-    fun testSupportTheCorrectMethod() {
-        assertThat(converter.supports(ConversionMethod.BINARY_TO_ROMAN)).isTrue()
-        assertThat(converter.supports(ConversionMethod.DECIMAL_TO_ROMAN)).isFalse()
-    }
-
-    @ParameterizedTest
-    @MethodSource("binaryToRomanTestdata")
-    @DisplayName("WHEN a valid value is submitted THEN the validation returns true")
-    fun testValidationSuccess(givenInput: String) {
-        assertThat(converter.isValid(givenInput)).isTrue()
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["", "x", "A", "15", "111110100000"])
-    @DisplayName("WHEN an invalid value is submitted THEN the validation returns false")
-    fun testValidationFailure(givenInput: String) {
-        assertThat(converter.isValid(givenInput)).isFalse()
     }
 }

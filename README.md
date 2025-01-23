@@ -46,10 +46,10 @@ Currently are implemented:
 To add a new converter:
 
 * Add a new conversion method to the enum `dev.matzat.numberconverter.converter.ConversionMethod`
-* Create a class that implements the interface `dev.matzat.numberconverter.converter.Converter`
+* Create a class that extends the abstract class `dev.matzat.numberconverter.converter.BaseConverter`
 * Implement the method `boolean supports(final ConversionMethod conversionMethod)` so that it returns true if your new conversion method is given as a parameter
 * Implement the method `boolean isValid(final String value)` to validate the input values of your new conversion
-* Implement the method `String convert(final String value)` with your new conversion
+* Implement the method `String conversion(final String value)` with your new conversion
 * Annotate the new converter class as Spring `@Component`
 
 ## Local development

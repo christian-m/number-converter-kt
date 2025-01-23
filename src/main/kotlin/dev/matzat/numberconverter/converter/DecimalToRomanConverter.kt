@@ -3,7 +3,7 @@ package dev.matzat.numberconverter.converter
 import org.springframework.stereotype.Component
 
 @Component
-class DecimalToRomanConverter : Converter {
+class DecimalToRomanConverter : BaseConverter() {
     companion object {
         private const val MAX_SUPPORTED_INPUT_VALUE = 3999
         private const val MIN_SUPPORTED_INPUT_VALUE = 0
@@ -22,11 +22,7 @@ class DecimalToRomanConverter : Converter {
                 }
         }
 
-    @Throws(IllegalArgumentException::class)
-    override fun convert(value: String): String {
-        require(isValid(value)) {
-            "Submitted input '$value' is not a valid decimal value or is not in the range of $MIN_SUPPORTED_INPUT_VALUE - $MAX_SUPPORTED_INPUT_VALUE"
-        }
+    override fun conversion(value: String): String {
         var input = value.toInt()
         val roman = StringBuilder()
         RomanBase.entries.forEach { conversionBase ->

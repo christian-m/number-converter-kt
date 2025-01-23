@@ -23,6 +23,47 @@ class DecimalToRomanConverterTest(
     @Autowired
     private val converter: DecimalToRomanConverter,
 ) {
+    @ParameterizedTest
+    @MethodSource("intToRomanTestdata")
+    @DisplayName("WHEN a valid integer is submitted to the converter THEN the appropriate roman number is returned as string")
+    fun testIntToRoman(
+        input: String,
+        expected: String,
+    ) {
+        val result = converter.convert(input)
+        assertThat(result).isEqualTo(expected)
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["", "x", "A", "-1", "4000"])
+    @DisplayName("WHEN an invalid value is submitted to the converter THEN an IllegalArgumentException is thrown")
+    fun testIntToRomanValueOutOfRange(input: String) {
+        assertThat(assertThrows<IllegalArgumentException> { converter.convert(input) }.message).isEqualTo(
+            "Submitted input '$input' is not a valid value or in the supported range",
+        )
+    }
+
+    @Test
+    @DisplayName("WHEN the conversion method DECIMAL_TO_ROMAN is submitted THEN true is returned, false otherwise")
+    fun testSupportTheCorrectMethod() {
+        assertThat(converter.supports(ConversionMethod.DECIMAL_TO_ROMAN)).isTrue()
+        assertThat(converter.supports(ConversionMethod.BINARY_TO_ROMAN)).isFalse()
+    }
+
+    @ParameterizedTest
+    @MethodSource("intToRomanTestdata")
+    @DisplayName("WHEN a valid value is submitted THEN the validation returns true")
+    fun testValidationSuccess(givenInput: String) {
+        assertThat(converter.isValid(givenInput)).isTrue()
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["", "x", "A", "-1", "4000"])
+    @DisplayName("WHEN an invalid value is submitted THEN the validation returns false")
+    fun testValidationFailure(givenInput: String) {
+        assertThat(converter.isValid(givenInput)).isFalse()
+    }
+
     companion object {
         @JvmStatic
         fun intToRomanTestdata(): Stream<Arguments> =
@@ -68,46 +109,5 @@ class DecimalToRomanConverterTest(
                 Arguments.of("3000", "MMM"),
                 Arguments.of("3999", "MMMCMXCIX"),
             )
-    }
-
-    @ParameterizedTest
-    @MethodSource("intToRomanTestdata")
-    @DisplayName("WHEN a valid integer is submitted to the converter THEN the appropriate roman number is returned as string")
-    fun testIntToRoman(
-        input: String,
-        expected: String,
-    ) {
-        val result = converter.convert(input)
-        assertThat(result).isEqualTo(expected)
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["-1", "4000"])
-    @DisplayName("WHEN an integer out of range is submitted to the converter THEN an IllegalArgumentException is thrown")
-    fun testIntToRomanValueOutOfRange(input: String) {
-        assertThat(assertThrows<IllegalArgumentException> { converter.convert(input) }.message).isEqualTo(
-            "Submitted input '$input' is not a valid decimal value or is not in the range of 0 - 3999",
-        )
-    }
-
-    @Test
-    @DisplayName("WHEN the conversion method DECIMAL_TO_ROMAN is submitted THEN true is returned, false otherwise")
-    fun testSupportTheCorrectMethod() {
-        assertThat(converter.supports(ConversionMethod.DECIMAL_TO_ROMAN)).isTrue()
-        assertThat(converter.supports(ConversionMethod.BINARY_TO_ROMAN)).isFalse()
-    }
-
-    @ParameterizedTest
-    @MethodSource("intToRomanTestdata")
-    @DisplayName("WHEN a valid value is submitted THEN the validation returns true")
-    fun testValidationSuccess(givenInput: String) {
-        assertThat(converter.isValid(givenInput)).isTrue()
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["", "x", "A", "-1", "4000"])
-    @DisplayName("WHEN an invalid value is submitted THEN the validation returns false")
-    fun testValidationFailure(givenInput: String) {
-        assertThat(converter.isValid(givenInput)).isFalse()
     }
 }
