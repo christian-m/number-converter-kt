@@ -15,7 +15,7 @@
     <description>Number Converter API for converting numeric values to another value format</description>
     <properties>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>2.1.0</kotlin.version>
+        <kotlin.version>2.1.10</kotlin.version>
         <kotlinLogging.version>7.0.3</kotlinLogging.version>
         <springDoc.version>2.8.3</springDoc.version>
         <assertk.version>0.28.1</assertk.version>
