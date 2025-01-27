@@ -17,7 +17,7 @@
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.version>2.1.0</kotlin.version>
         <kotlinLogging.version>7.0.3</kotlinLogging.version>
-        <springDoc.version>2.8.3</springDoc.version>
+        <springDoc.version>2.8.4</springDoc.version>
         <assertk.version>0.28.1</assertk.version>
         <mockk.version>1.13.16</mockk.version>
         <flywaySpringTest.version>10.0.0</flywaySpringTest.version>
