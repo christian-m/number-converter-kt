@@ -25,7 +25,7 @@
         <kotlinCoroutinesDebug.version>1.10.1</kotlinCoroutinesDebug.version>
         <kotlinCoroutinesReactor.version>1.10.1</kotlinCoroutinesReactor.version>
         <reactorKotlinExtensions.version>1.2.3</reactorKotlinExtensions.version>
-        <ktlintPlugin.version>3.4.0</ktlintPlugin.version>
+        <ktlintPlugin.version>3.5.0</ktlintPlugin.version>
         <detektPlugin.version>1.23.7</detektPlugin.version>
         <detektRules.version>1.23.7</detektRules.version>
         <java.version>21</java.version>
